@@ -32,7 +32,7 @@ flowchart TD
 ## Theoretical & Mathematical Models
 
 ### TCS3200 Color Frequency Scaling
-The TCS3200 sensor consists of an 8x8 array of photodiodes with red, green, blue, and clear filters. The internal oscillator converts the light intensity into a square wave output. The output frequency $f_{out}$ is directly proportional to the irradiance $E_e$.
+The TCS3200 sensor consists of an 8x8 array of photodiodes with red, green, blue, and clear filters. The internal oscillator converts the light intensity into a square wave output. The output frequency $f_{out}$is directly proportional to the irradiance$E_e$.
 $$ f_{out} \propto E_e $$
 
 To optimize the frequency output for the Arduino's `pulseIn()` timing resolution, the firmware statically scales the output frequency to 20% by setting the logic pins:
@@ -40,7 +40,7 @@ To optimize the frequency output for the Arduino's `pulseIn()` timing resolution
 - $S_1 = \text{LOW}$
 
 ### Servo Kinematic Actuation
-A standard hobby servo interprets a 50Hz (20ms period) PWM signal. The rotational angle $\theta$ is proportional to the pulse width $t_p$:
+A standard hobby servo interprets a 50Hz (20ms period) PWM signal. The rotational angle $\theta$is proportional to the pulse width$t_p$:
 - $t_p = 1.0 \text{ ms} \rightarrow \theta = 0^\circ$
 - $t_p = 1.5 \text{ ms} \rightarrow \theta = 90^\circ$
 - $t_p = 2.0 \text{ ms} \rightarrow \theta = 180^\circ$

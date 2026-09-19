@@ -19,31 +19,31 @@ This project implements an automated pick-and-place mechatronic system utilizing
 
 ## System Architecture
 
-```mermaid
+mermaid
 flowchart TD
-    PWR[External 5V/3A Power Supply] -->|Power Bus| SERVO[5x Micro Servos]
-    PWR -->|Common GND| MCU[Arduino Uno]
+    PWR["External 5V/3A Power Supply"] -->|Power Bus| SERVO["5x Micro Servos"]
+    PWR -->|Common GND| MCU["Arduino Uno"]
     MCU -->|PWM Signals| SERVO
-    MCU -->|S0, S1, S2, S3| TCS[TCS3200 Color Sensor]
+    MCU -->|S0, S1, S2, S3| TCS["TCS3200 Color Sensor"]
     TCS -->|Frequency OUT| MCU
-    MCU -->|Digital Out| LED[RGB Indicator LEDs]
-```
+    MCU -->|Digital Out| LED["RGB Indicator LEDs"]
+
 
 ## Theoretical & Mathematical Models
 
 ### TCS3200 Color Frequency Scaling
-The TCS3200 sensor consists of an 8x8 array of photodiodes with red, green, blue, and clear filters. The internal oscillator converts the light intensity into a square wave output. The output frequency $f_{out}$ is directly proportional to the irradiance $E_e$.
-$$ f_{out} \propto E_e $$
+The TCS3200 sensor consists of an 8x8 array of photodiodes with red, green, blue, and clear filters. The internal oscillator converts the light intensity into a square wave output. The output frequency $f_{"out"}$ is directly proportional to the irradiance $E_e$.
+$$ f_{"out"} \propto E_e $$
 
 To optimize the frequency output for the Arduino's `pulseIn()` timing resolution, the firmware statically scales the output frequency to 20% by setting the logic pins:
-- $S_0 = \text{HIGH}$
-- $S_1 = \text{LOW}$
+- $S_0 = \text{"HIGH"}$
+- $S_1 = \text{"LOW"}$
 
 ### Servo Kinematic Actuation
 A standard hobby servo interprets a 50Hz (20ms period) PWM signal. The rotational angle $\theta$ is proportional to the pulse width $t_p$:
-- $t_p = 1.0 \text{ ms} \rightarrow \theta = 0^\circ$
-- $t_p = 1.5 \text{ ms} \rightarrow \theta = 90^\circ$
-- $t_p = 2.0 \text{ ms} \rightarrow \theta = 180^\circ$
+- $t_p = 1.0 \text{" ms"} \rightarrow \theta = 0^\circ$
+- $t_p = 1.5 \text{" ms"} \rightarrow \theta = 90^\circ$
+- $t_p = 2.0 \text{" ms"} \rightarrow \theta = 180^\circ$
 
 ## Hardware Bill of Materials (BOM)
 | Component | Specification | Quantity |
@@ -85,7 +85,7 @@ A standard hobby servo interprets a 50Hz (20ms period) PWM signal. The rotationa
 ```
 
 ## Step-by-Step Firmware Setup & Prerequisites
-1. Download and install the [Arduino IDE](https://www.arduino.cc/en/software).
+1. Download and install the ["Arduino IDE"](https://www.arduino.cc/en/software).
 2. Open the project firmware at `firmware/color_sorter.ino`.
 3. The code relies on the built-in `<Servo.h>` library; no external libraries are required.
 4. Ensure your external 5V power supply is turned on before engaging the Arduino to prevent sudden inrush currents from dropping the logic voltage.
@@ -107,4 +107,4 @@ Mechatronics Engineer | Mechanical Design & CAD (SolidWorks & AutoCAD) | Prevent
 [GitHub](https://github.com/Hassan-Moqbel) · [Facebook](https://www.facebook.com/share/1BqxAgVjHi/) · [LinkedIn](https://www.linkedin.com/in/hassan-moqbel)
 
 ## License
-This project is licensed under the [GPL-2.0 License](LICENSE).
+This project is licensed under the ["GPL-2.0 License"](LICENSE).

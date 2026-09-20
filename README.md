@@ -21,26 +21,45 @@ This project implements an automated pick-and-place mechatronic system utilizing
 
 ```mermaid
 flowchart TD
-    PWR["External 5V/3A Power Supply"] -->|Power Bus| SERVO["5x Micro Servos"]
-    PWR -->|Common GND| MCU["Arduino Uno"]
-    MCU -->|PWM Signals| SERVO
-    MCU -->|S0, S1, S2, S3| TCS["TCS3200 Color Sensor"]
-    TCS -->|Frequency OUT| MCU
-    MCU -->|Digital Out| LED["RGB Indicator LEDs"]
+    subgraph Power["Power Distribution"]
+        PWR["External 5V DC Supply"]
+    end
+
+    subgraph Controller["Central Processing"]
+        MCU["Arduino Uno (ATmega328P)"]
+    end
+
+    subgraph Sensing["Input Stage"]
+        TCS["TCS3200 Color Sensor"]
+    end
+
+    subgraph Actuation["Output & Feedback Stage"]
+        SERVOS["5x Micro Servos (Robotic Arm Axes)"]
+        RGB["RGB Indicator LED"]
+    end
+
+    PWR -->|"Direct 5V Rail"| SERVOS
+    PWR -->|"Regulated VCC"| MCU
+    MCU -->|"S0, S1, S2, S3 Control"| TCS
+    TCS -->|"Frequency OUT (FOUT)"| MCU
+    MCU -->|"Multi-channel PWM Logic"| SERVOS
+    MCU -->|"Digital State Drive"| RGB
 ```
 
 ## Theoretical & Mathematical Models
 
 ### TCS3200 Color Frequency Scaling
-The TCS3200 sensor consists of an 8x8 array of photodiodes with red, green, blue, and clear filters. The internal oscillator converts the light intensity into a square wave output. The output frequency $f_{out}$is directly proportional to the irradiance$E_e$.
-$$ f_{out} \propto E_e $$
+
+The TCS3200 sensor consists of an $8 \times 8$ array of photodiodes with red, green, blue, and clear filters. The internal oscillator converts the light intensity into a square wave output. The output frequency ($f_{\text{out}}$) is directly proportional to the incident irradiance ($E_e$):
+
+$$f_{\text{out}} \propto E_e$$
 
 To optimize the frequency output for the Arduino's `pulseIn()` timing resolution, the firmware statically scales the output frequency to 20% by setting the logic pins:
 - $S_0 = \text{HIGH}$
 - $S_1 = \text{LOW}$
 
 ### Servo Kinematic Actuation
-A standard hobby servo interprets a 50Hz (20ms period) PWM signal. The rotational angle $\theta$is proportional to the pulse width$t_p$:
+A standard hobby servo interprets a 50Hz (20ms period) PWM signal. The rotational angle $\theta $ is proportional to the pulse width$t_p$:
 - $t_p = 1.0 \text{ ms} \rightarrow \theta = 0^\circ$
 - $t_p = 1.5 \text{ ms} \rightarrow \theta = 90^\circ$
 - $t_p = 2.0 \text{ ms} \rightarrow \theta = 180^\circ$

@@ -139,25 +139,28 @@ The automation cell follows an asynchronous Sequential Function Chart (SFC / GRA
 
 ```mermaid
 stateDiagram-v2
-    [*] --> STATE_0_IDLE : Power On & Safety Relay Healthy
+    [*] --> STATE_0_IDLE : Power On & Safety Circuit Closed
 
     STATE_0_IDLE --> STATE_1_INFEED : Start_PB = TRUE & E_Stop = HEALTHY
-    STATE_1_INFEED --> STATE_2_INSPECT : Part Detect Sensor Active
+    STATE_1_INFEED --> STATE_2_INSPECT : Sensor_Entry = TRUE
 
-    STATE_2_INSPECT --> STATE_3_DIVERT : Defective / Target Color Match = TRUE
-    STATE_2_INSPECT --> STATE_4_TAGGING : Valid Color / Pass = TRUE
+    STATE_2_INSPECT --> STATE_3_DIVERT_1 : Color = BLUE
+    STATE_2_INSPECT --> STATE_4_DIVERT_2 : Color = GREEN
+    STATE_2_INSPECT --> STATE_5_PASS_TAG : Color = METAL / PASS
 
-    STATE_3_DIVERT --> STATE_1_INFEED : Part Ejected & Pusher Retracted
-    STATE_4_TAGGING --> STATE_5_PICK_PLACE : Tag Applied Successfully
+    STATE_3_DIVERT_1 --> STATE_1_INFEED : Pusher 1 Extended & Retracted
+    STATE_4_DIVERT_2 --> STATE_1_INFEED : Pusher 2 Extended & Retracted
+    STATE_5_PASS_TAG --> STATE_6_PICK_PLACE : Tagging Applied
 
-    STATE_5_PICK_PLACE --> STATE_1_INFEED : Part Deposited in Exit Bin
+    STATE_6_PICK_PLACE --> STATE_1_INFEED : Gantry Sequence Completed
     STATE_1_INFEED --> STATE_0_IDLE : Stop_PB = TRUE
-    
+
     STATE_1_INFEED --> STATE_ESTOP : Emergency_Stop = TRIGGERED
     STATE_2_INSPECT --> STATE_ESTOP : Emergency_Stop = TRIGGERED
-    STATE_3_DIVERT --> STATE_ESTOP : Emergency_Stop = TRIGGERED
-    STATE_4_TAGGING --> STATE_ESTOP : Emergency_Stop = TRIGGERED
-    STATE_5_PICK_PLACE --> STATE_ESTOP : Emergency_Stop = TRIGGERED
+    STATE_3_DIVERT_1 --> STATE_ESTOP : Emergency_Stop = TRIGGERED
+    STATE_4_DIVERT_2 --> STATE_ESTOP : Emergency_Stop = TRIGGERED
+    STATE_5_PASS_TAG --> STATE_ESTOP : Emergency_Stop = TRIGGERED
+    STATE_6_PICK_PLACE --> STATE_ESTOP : Emergency_Stop = TRIGGERED
 ```
 
 ---

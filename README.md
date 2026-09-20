@@ -59,7 +59,7 @@ To optimize the frequency output for the Arduino's `pulseIn()` timing resolution
 - $S_1 = \text{LOW}$
 
 ### Servo Kinematic Actuation
-A standard hobby servo interprets a 50 Hz (20 ms period) PWM signal. The rotational angle ($	heta$) is proportional to the pulse width ($t_p$):
+A standard hobby servo interprets a 50 Hz (20 ms period) PWM signal. The rotational angle ($\theta$) is proportional to the pulse width ($t_p$):
 - $t_p = 1.0 \text{ ms} \rightarrow \theta = 0^\circ$
 - $t_p = 1.5 \text{ ms} \rightarrow \theta = 90^\circ$
 - $t_p = 2.0 \text{ ms} \rightarrow \theta = 180^\circ$
